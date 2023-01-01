@@ -9,6 +9,7 @@ import io.flutter.embedding.android.FlutterImageView
 import io.flutter.embedding.android.FlutterSurfaceView
 import io.flutter.embedding.android.FlutterTextureView
 import io.flutter.embedding.android.FlutterView
+import io.flutter.embedding.engine.FlutterEngine
 
 class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChild2,
     NestedScrollingChild3 {
@@ -18,14 +19,13 @@ class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChil
     constructor(context: Context, flutterImageView: FlutterImageView) : super(context, flutterImageView)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    companion object {
-        init {
-
-        }
-    }
-
     init {
         isNestedScrollingEnabled = true
+    }
+
+    override fun attachToFlutterEngine(flutterEngine: FlutterEngine) {
+        super.attachToFlutterEngine(flutterEngine)
+        initAfterAttachedToEngine()
     }
 
     override fun startNestedScroll(axes: Int, type: Int): Boolean {
@@ -73,6 +73,6 @@ class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChil
         TODO("Not yet implemented")
     }
 
-//    external fun
+    external fun initAfterAttachedToEngine()
 
 }
