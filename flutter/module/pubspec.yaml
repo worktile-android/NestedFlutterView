@@ -84,4 +84,3 @@ flutter:
   module:
     androidX: true
     androidPackage: com.worktile.flutter.module
-    iosBundleIdentifier: com.worktile.flutter.module
