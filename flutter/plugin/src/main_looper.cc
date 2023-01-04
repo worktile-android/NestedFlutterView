@@ -4,7 +4,6 @@
 
 #include <unistd.h>
 #include "main_looper.h"
-#include "java_types.h"
 
 shared_ptr<MainLooper> MainLooper::shared_main_looper_ = nullptr;
 

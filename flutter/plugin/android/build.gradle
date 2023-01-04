@@ -59,15 +59,18 @@ android {
         externalNativeBuild {
             cmake {
                 File file = new File(project.projectDir, 'local.properties')
-                if(file.exists()) {
-                    InputStream inputStream = file.newDataInputStream();
-                    Properties properties = new Properties()
-                    properties.load(inputStream)
+                if (!file.exists()) {
+                    file.createNewFile()
+                }
+                InputStream inputStream = file.newDataInputStream();
+                Properties properties = new Properties()
+                properties.load(inputStream)
 
-                    if (properties.containsKey("flutter.sdk")){
-                        String flutterSdk = properties.getProperty("flutter.sdk")
-                        arguments "-DFLUTTER_SDK=${flutterSdk}"
-                    }
+                if (properties.containsKey("flutter.sdk")){
+                    String flutterSdk = properties.getProperty("flutter.sdk")
+                    arguments "-DFLUTTER_SDK=${flutterSdk}"
+                } else {
+                    throw new GradleException("cannot find flutter.sdk in local.properties")
                 }
             }
         }

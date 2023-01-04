@@ -7,11 +7,9 @@ project(plugin_library VERSION 0.0.1)
 
 set(DART_DIR ${FLUTTER_SDK}/bin/cache/dart-sdk/include)
 
-add_library(nested_flutter_view SHARED)
-
-target_sources(
+add_library(
         nested_flutter_view
-        PRIVATE
+        SHARED
         nested_flutter_view.cc
         jni_lifecycle.cc
         jni_ref_cache.cc

@@ -2,12 +2,21 @@ rootProject.name = "NestedFlutterView"
 include ':app'
 include ':library'
 
+if (!new File(settingsDir, 'flutter/module/.android').exists()) {
+    exec {
+        workingDir 'flutter/module'
+        environment 'PUB_HOSTED_URL', 'https://pub.flutter-io.cn'
+        environment 'FLUTTER_STORAGE_BASE_URL', 'https://storage.flutter-io.cn'
+        executable 'flutter'
+        args "pub", "get"
+    }
+}
 setBinding(new Binding([gradle: this]))
 evaluate(new File(settingsDir, 'flutter/module/.android/include_flutter.groovy'))
 
 include ':flutter'
 
-include ':plugin'
-project(':plugin').projectDir = new File(settingsDir, 'flutter/plugin/android')
+//include ':plugin'
+//project(':plugin').projectDir = new File(settingsDir, 'flutter/plugin/android')
 include ':module'
 project(':module').projectDir = new File('flutter/module')
