@@ -9,8 +9,16 @@ import io.flutter.embedding.android.FlutterImageView
 import io.flutter.embedding.android.FlutterSurfaceView
 import io.flutter.embedding.android.FlutterTextureView
 import io.flutter.embedding.android.FlutterView
-import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.renderer.FlutterUiDisplayListener
+import io.flutter.plugin.common.BasicMessageChannel
+import io.flutter.plugin.common.StandardMessageCodec
 
+/**
+ * 一个android app进程有一个libnested_flutter_view.so
+ * 一个android app进程（libnested_flutter_view.so）可能有多个NestedFlutterView
+ * 一个android app进程（libnested_flutter_view.so）可能有多个Flutter Engine(Dart VM)
+ * 一个NestedFlutterView一个时刻会有0或1个Flutter Engine(Dart VM)
+ */
 class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChild2,
     NestedScrollingChild3 {
     constructor(context: Context) : super(context)
@@ -19,13 +27,36 @@ class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChil
     constructor(context: Context, flutterImageView: FlutterImageView) : super(context, flutterImageView)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    init {
-        isNestedScrollingEnabled = true
+    companion object {
+        init {
+            System.loadLibrary("nested_flutter_view")
+        }
     }
 
-    override fun attachToFlutterEngine(flutterEngine: FlutterEngine) {
-        super.attachToFlutterEngine(flutterEngine)
-        initAfterAttachedToEngine()
+    private val handler by lazy { flutterViewHandler() }
+
+    private val handlerChannel by lazy {
+        BasicMessageChannel(
+            binaryMessenger,
+            "com.worktile.flutter.nested_flutter_view/handler",
+            StandardMessageCodec.INSTANCE
+        )
+    }
+
+    init {
+        isNestedScrollingEnabled = true
+        addOnFirstFrameRenderedListener(object : FlutterUiDisplayListener {
+            override fun onFlutterUiDisplayed() {
+                handlerChannel.send(handler)
+            }
+
+            override fun onFlutterUiNoLongerDisplayed() { }
+        })
+    }
+
+    override fun detachFromFlutterEngine() {
+        deleteFlutterViewHandler(handler)
+        super.detachFromFlutterEngine()
     }
 
     override fun startNestedScroll(axes: Int, type: Int): Boolean {
@@ -73,6 +104,12 @@ class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChil
         TODO("Not yet implemented")
     }
 
-    external fun initAfterAttachedToEngine()
+    private external fun flutterViewHandler(): Long
+    private external fun deleteFlutterViewHandler(handler: Long)
+
+    private fun test() {
+        println(System.currentTimeMillis())
+        println("hhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    }
 
 }

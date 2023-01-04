@@ -1,15 +1,15 @@
 # Run with `flutter pub run ffigen --config ffigen.yaml`.
-name: PluginBindings
+name: NestedFlutterViewBindings
 description: |
   Bindings for `src/plugin.h`.
 
   Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
-output: 'lib/plugin_bindings_generated.dart'
+output: 'lib/nested_flutter_view_bindings_generated.dart'
 headers:
   entry-points:
-    - 'src/plugin.h'
+    - 'src/nested_flutter_view.h'
   include-directives:
-    - 'src/plugin.h'
+    - 'src/**.h'
 preamble: |
   // ignore_for_file: always_specify_types
   // ignore_for_file: camel_case_types

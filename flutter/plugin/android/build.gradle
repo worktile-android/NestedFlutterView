@@ -55,5 +55,21 @@ android {
 
     defaultConfig {
         minSdkVersion 16
+
+        externalNativeBuild {
+            cmake {
+                File file = new File(project.projectDir, 'local.properties')
+                if(file.exists()) {
+                    InputStream inputStream = file.newDataInputStream();
+                    Properties properties = new Properties()
+                    properties.load(inputStream)
+
+                    if (properties.containsKey("flutter.sdk")){
+                        String flutterSdk = properties.getProperty("flutter.sdk")
+                        arguments "-DFLUTTER_SDK=${flutterSdk}"
+                    }
+                }
+            }
+        }
     }
 }
