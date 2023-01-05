@@ -16,8 +16,8 @@ class MainLooper {
  public:
   static shared_ptr<MainLooper> GetInstance();
   ~MainLooper();
-  void init();
-  void call(const function<void()>& invoke) const;
+  void Init();
+  void Call(const function<void()>& invoke) const;
 
  private:
   MainLooper();

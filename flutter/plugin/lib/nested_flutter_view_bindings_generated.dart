@@ -46,15 +46,287 @@ class NestedFlutterViewBindings {
           void Function(
               int, ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)>();
 
-  void test(
+  int start_nested_scroll_1(
+    int handler,
+    int axes,
+  ) {
+    return _start_nested_scroll_1(
+      handler,
+      axes,
+    );
+  }
+
+  late final _start_nested_scroll_1Ptr =
+      _lookup<ffi.NativeFunction<ffi.Uint8 Function(ffi.IntPtr, ffi.Int32)>>(
+          'start_nested_scroll_1');
+  late final _start_nested_scroll_1 =
+      _start_nested_scroll_1Ptr.asFunction<int Function(int, int)>();
+
+  void stop_nested_scroll_1(
     int handler,
   ) {
-    return _test(
+    return _stop_nested_scroll_1(
       handler,
     );
   }
 
-  late final _testPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('test');
-  late final _test = _testPtr.asFunction<void Function(int)>();
+  late final _stop_nested_scroll_1Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr)>>(
+          'stop_nested_scroll_1');
+  late final _stop_nested_scroll_1 =
+      _stop_nested_scroll_1Ptr.asFunction<void Function(int)>();
+
+  int dispatch_nested_scroll_1(
+    int handler,
+    int dx_consumed,
+    int dy_consumed,
+    int dx_unconsumed,
+    int dy_unconsumed,
+    ffi.Pointer<ffi.Int32> offset_in_window,
+  ) {
+    return _dispatch_nested_scroll_1(
+      handler,
+      dx_consumed,
+      dy_consumed,
+      dx_unconsumed,
+      dy_unconsumed,
+      offset_in_window,
+    );
+  }
+
+  late final _dispatch_nested_scroll_1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint8 Function(ffi.IntPtr, ffi.Int32, ffi.Int32, ffi.Int32,
+              ffi.Int32, ffi.Pointer<ffi.Int32>)>>('dispatch_nested_scroll_1');
+  late final _dispatch_nested_scroll_1 =
+      _dispatch_nested_scroll_1Ptr.asFunction<
+          int Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>)>();
+
+  int dispatch_nested_pre_scroll_1(
+    int handler,
+    int dx,
+    int dy,
+    ffi.Pointer<ffi.Int32> consumed,
+    ffi.Pointer<ffi.Int32> offset_in_window,
+  ) {
+    return _dispatch_nested_pre_scroll_1(
+      handler,
+      dx,
+      dy,
+      consumed,
+      offset_in_window,
+    );
+  }
+
+  late final _dispatch_nested_pre_scroll_1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint8 Function(
+              ffi.IntPtr,
+              ffi.Int32,
+              ffi.Int32,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ffi.Int32>)>>('dispatch_nested_pre_scroll_1');
+  late final _dispatch_nested_pre_scroll_1 =
+      _dispatch_nested_pre_scroll_1Ptr.asFunction<
+          int Function(
+              int, int, int, ffi.Pointer<ffi.Int32>, ffi.Pointer<ffi.Int32>)>();
+
+  int dispatch_nested_fling_1(
+    int handler,
+    double velocity_x,
+    double velocity_y,
+    int consumed,
+  ) {
+    return _dispatch_nested_fling_1(
+      handler,
+      velocity_x,
+      velocity_y,
+      consumed,
+    );
+  }
+
+  late final _dispatch_nested_fling_1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint8 Function(ffi.IntPtr, ffi.Float, ffi.Float,
+              ffi.Uint8)>>('dispatch_nested_fling_1');
+  late final _dispatch_nested_fling_1 = _dispatch_nested_fling_1Ptr
+      .asFunction<int Function(int, double, double, int)>();
+
+  int dispatch_nested_pre_fling_1(
+    int handler,
+    double velocity_x,
+    double velocity_y,
+  ) {
+    return _dispatch_nested_pre_fling_1(
+      handler,
+      velocity_x,
+      velocity_y,
+    );
+  }
+
+  late final _dispatch_nested_pre_fling_1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint8 Function(ffi.IntPtr, ffi.Float,
+              ffi.Float)>>('dispatch_nested_pre_fling_1');
+  late final _dispatch_nested_pre_fling_1 = _dispatch_nested_pre_fling_1Ptr
+      .asFunction<int Function(int, double, double)>();
+
+  int start_nested_scroll_2(
+    int handler,
+    int axes,
+    int type,
+  ) {
+    return _start_nested_scroll_2(
+      handler,
+      axes,
+      type,
+    );
+  }
+
+  late final _start_nested_scroll_2Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint8 Function(
+              ffi.IntPtr, ffi.Int32, ffi.Int32)>>('start_nested_scroll_2');
+  late final _start_nested_scroll_2 =
+      _start_nested_scroll_2Ptr.asFunction<int Function(int, int, int)>();
+
+  void stop_nested_scroll_2(
+    int handler,
+    int type,
+  ) {
+    return _stop_nested_scroll_2(
+      handler,
+      type,
+    );
+  }
+
+  late final _stop_nested_scroll_2Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int32)>>(
+          'stop_nested_scroll_2');
+  late final _stop_nested_scroll_2 =
+      _stop_nested_scroll_2Ptr.asFunction<void Function(int, int)>();
+
+  int dispatch_nested_scroll_2(
+    int handler,
+    int dx_consumed,
+    int dy_consumed,
+    int dx_unconsumed,
+    int dy_unconsumed,
+    ffi.Pointer<ffi.Int32> offset_in_window,
+    int type,
+  ) {
+    return _dispatch_nested_scroll_2(
+      handler,
+      dx_consumed,
+      dy_consumed,
+      dx_unconsumed,
+      dy_unconsumed,
+      offset_in_window,
+      type,
+    );
+  }
+
+  late final _dispatch_nested_scroll_2Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint8 Function(
+              ffi.IntPtr,
+              ffi.Int32,
+              ffi.Int32,
+              ffi.Int32,
+              ffi.Int32,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Int32)>>('dispatch_nested_scroll_2');
+  late final _dispatch_nested_scroll_2 =
+      _dispatch_nested_scroll_2Ptr.asFunction<
+          int Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>, int)>();
+
+  int dispatch_nested_pre_scroll_2(
+    int handler,
+    int dx,
+    int dy,
+    ffi.Pointer<ffi.Int32> consumed,
+    ffi.Pointer<ffi.Int32> offset_in_window,
+    int type,
+  ) {
+    return _dispatch_nested_pre_scroll_2(
+      handler,
+      dx,
+      dy,
+      consumed,
+      offset_in_window,
+      type,
+    );
+  }
+
+  late final _dispatch_nested_pre_scroll_2Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint8 Function(
+              ffi.IntPtr,
+              ffi.Int32,
+              ffi.Int32,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Int32)>>('dispatch_nested_pre_scroll_2');
+  late final _dispatch_nested_pre_scroll_2 =
+      _dispatch_nested_pre_scroll_2Ptr.asFunction<
+          int Function(int, int, int, ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ffi.Int32>, int)>();
+
+  int dispatch_nested_scroll_3(
+    int handler,
+    int dx_consumed,
+    int dy_consumed,
+    int dx_unconsumed,
+    int dy_unconsumed,
+    ffi.Pointer<ffi.Int32> offset_in_window,
+    int type,
+    ffi.Pointer<ffi.Int32> consumed,
+  ) {
+    return _dispatch_nested_scroll_3(
+      handler,
+      dx_consumed,
+      dy_consumed,
+      dx_unconsumed,
+      dy_unconsumed,
+      offset_in_window,
+      type,
+      consumed,
+    );
+  }
+
+  late final _dispatch_nested_scroll_3Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint8 Function(
+              ffi.IntPtr,
+              ffi.Int32,
+              ffi.Int32,
+              ffi.Int32,
+              ffi.Int32,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Int32,
+              ffi.Pointer<ffi.Int32>)>>('dispatch_nested_scroll_3');
+  late final _dispatch_nested_scroll_3 =
+      _dispatch_nested_scroll_3Ptr.asFunction<
+          int Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>, int,
+              ffi.Pointer<ffi.Int32>)>();
+
+  /// FFI_PLUGIN_EXPORT void test(int32_t *arr);
+  ///
+  /// FFI_PLUGIN_EXPORT int test_result(intptr_t handler);
+  int test_result_array(
+    int handler,
+    ffi.Pointer<ffi.Int32> array,
+  ) {
+    return _test_result_array(
+      handler,
+      array,
+    );
+  }
+
+  late final _test_result_arrayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.IntPtr, ffi.Pointer<ffi.Int32>)>>('test_result_array');
+  late final _test_result_array = _test_result_arrayPtr
+      .asFunction<int Function(int, ffi.Pointer<ffi.Int32>)>();
 }

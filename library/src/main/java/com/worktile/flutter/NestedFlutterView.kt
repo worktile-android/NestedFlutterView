@@ -104,12 +104,18 @@ class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChil
         TODO("Not yet implemented")
     }
 
+    override fun dispatchNestedPreFling(velocityX: Float, velocityY: Float): Boolean {
+        println("dispatchNestedPreFlingggggggggggggggggggggggg")
+        return super.dispatchNestedPreFling(velocityX, velocityY)
+    }
+
+    fun testResultArray(array: IntArray): Int {
+        array[0] = 1
+        array[1] = 2
+        return 6
+    }
+
     private external fun flutterViewHandler(): Long
     private external fun deleteFlutterViewHandler(handler: Long)
-
-    private fun test() {
-        println(System.currentTimeMillis())
-        println("hhhhhhhhhhhhhhhhhhhhhhhhhhh")
-    }
 
 }

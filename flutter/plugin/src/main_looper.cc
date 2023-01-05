@@ -33,7 +33,7 @@ shared_ptr<MainLooper> MainLooper::GetInstance() {
   return shared_main_looper_;
 }
 
-void MainLooper::init() {
+void MainLooper::Init() {
   int message_pipe[2];
   pipe(message_pipe);
   read_pipe_ = message_pipe[0];
@@ -44,15 +44,15 @@ void MainLooper::init() {
                 nullptr);
 }
 
-void MainLooper::call(const function<void()>& invoke) const {
+void MainLooper::Call(const function<void()>& invoke) const {
   auto invoke_unique_ptr = make_unique<function<void()>>(invoke);
   auto invoke_ptr = invoke_unique_ptr.release();
-  write(write_pipe_, &invoke_ptr, sizeof(invoke_ptr));
+  write(write_pipe_, &invoke_ptr, sizeof(intptr_t));
 }
 
 int MainLooper::HandleMessage(int fd, int events, void *data) {
   function<void()>* invoke_ptr = nullptr;
-  if (read(fd, &invoke_ptr, sizeof(invoke_ptr)) != -1) {
+  if (read(fd, &invoke_ptr, sizeof(intptr_t)) != -1) {
     unique_ptr<function<void()>> invoke_unique_ptr(invoke_ptr);
     (*invoke_unique_ptr)();
   }

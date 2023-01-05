@@ -26,6 +26,7 @@ target_include_directories(
 target_link_libraries(
         nested_flutter_view
         android
+        log
 )
 
 set_target_properties(nested_flutter_view PROPERTIES

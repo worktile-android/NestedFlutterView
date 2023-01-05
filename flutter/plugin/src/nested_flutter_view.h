@@ -22,7 +22,61 @@ extern "C" {
 FFI_PLUGIN_EXPORT void cache_delete_nested_flutter_view_handle_function(intptr_t shell_id,
                                                                         void (*function)());
 
-FFI_PLUGIN_EXPORT void test(int64_t handler);
+FFI_PLUGIN_EXPORT uint8_t start_nested_scroll_1(intptr_t handler, int32_t axes);
+
+FFI_PLUGIN_EXPORT void stop_nested_scroll_1(intptr_t handler);
+
+FFI_PLUGIN_EXPORT uint8_t dispatch_nested_scroll_1(intptr_t handler,
+                                                   int32_t dx_consumed,
+                                                   int32_t dy_consumed,
+                                                   int32_t dx_unconsumed,
+                                                   int32_t dy_unconsumed,
+                                                   int32_t *offset_in_window);
+
+FFI_PLUGIN_EXPORT uint8_t dispatch_nested_pre_scroll_1(intptr_t handler,
+                                                       int32_t dx,
+                                                       int32_t dy,
+                                                       int32_t *consumed,
+                                                       int32_t *offset_in_window);
+
+FFI_PLUGIN_EXPORT uint8_t dispatch_nested_fling_1(intptr_t handler,
+                                                  float velocity_x,
+                                                  float velocity_y,
+                                                  uint8_t consumed);
+
+FFI_PLUGIN_EXPORT uint8_t dispatch_nested_pre_fling_1(intptr_t handler,
+                                                      float velocity_x,
+                                                      float velocity_y);
+
+FFI_PLUGIN_EXPORT uint8_t start_nested_scroll_2(intptr_t handler, int32_t axes, int32_t type);
+
+FFI_PLUGIN_EXPORT void stop_nested_scroll_2(intptr_t handler, int32_t type);
+
+FFI_PLUGIN_EXPORT uint8_t dispatch_nested_scroll_2(intptr_t handler,
+                                                   int32_t dx_consumed,
+                                                   int32_t dy_consumed,
+                                                   int32_t dx_unconsumed,
+                                                   int32_t dy_unconsumed,
+                                                   int32_t *offset_in_window,
+                                                   int32_t type);
+
+FFI_PLUGIN_EXPORT uint8_t dispatch_nested_pre_scroll_2(intptr_t handler,
+                                                       int32_t dx,
+                                                       int32_t dy,
+                                                       int32_t *consumed,
+                                                       int32_t *offset_in_window,
+                                                       int32_t type);
+
+FFI_PLUGIN_EXPORT uint8_t dispatch_nested_scroll_3(intptr_t handler,
+                                                   int32_t dx_consumed,
+                                                   int32_t dy_consumed,
+                                                   int32_t dx_unconsumed,
+                                                   int32_t dy_unconsumed,
+                                                   int32_t *offset_in_window,
+                                                   int32_t type,
+                                                   int32_t *consumed);
+
+FFI_PLUGIN_EXPORT int test_result_array(intptr_t handler, int32_t *array);
 
 #ifdef __cplusplus
 }

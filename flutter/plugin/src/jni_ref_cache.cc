@@ -18,3 +18,24 @@ shared_ptr<JniRefCache> JniRefCache::GetInstance() {
   return shared_jni_ref_cache_;
 }
 
+void JniRefCache::CacheJniReferences(JNIEnv *env) {
+  env_ = env;
+  nested_flutter_view_class_ = env->FindClass("com/worktile/flutter/NestedFlutterView");
+
+  start_nested_scroll_1_ = env->GetMethodID(nested_flutter_view_class_, "startNestedScroll", "(I)Z");
+  stop_nested_scroll_1_ = env->GetMethodID(nested_flutter_view_class_, "stopNestedScroll", "()V");
+  dispatch_nested_scroll_1_ = env->GetMethodID(nested_flutter_view_class_, "dispatchNestedScroll", "(IIII[I)Z");
+  dispatch_nested_pre_scroll_1_ = env->GetMethodID(nested_flutter_view_class_, "dispatchNestedPreScroll", "(II[I[I)Z");
+  dispatch_nested_fling_1_ = env->GetMethodID(nested_flutter_view_class_, "dispatchNestedFling", "(FFZ)Z");
+  dispatch_nested_pre_fling_1_ = env->GetMethodID(nested_flutter_view_class_, "dispatchNestedPreFling", "(FF)Z");
+
+  start_nested_scroll_2_ = env->GetMethodID(nested_flutter_view_class_, "startNestedScroll", "(II)Z");
+  stop_nested_scroll_2_ = env->GetMethodID(nested_flutter_view_class_, "stopNestedScroll", "(I)V");
+  dispatch_nested_scroll_2_ = env->GetMethodID(nested_flutter_view_class_, "dispatchNestedScroll", "(IIII[II)Z");
+  dispatch_nested_pre_scroll_2_ = env->GetMethodID(nested_flutter_view_class_, "dispatchNestedPreScroll", "(II[I[II)Z");
+
+  dispatch_nested_scroll_3_ = env->GetMethodID(nested_flutter_view_class_, "dispatchNestedScroll", "(IIII[II[I)V");
+
+  test_result_array_ = env->GetMethodID(nested_flutter_view_class_, "testResultArray", "([I)I");
+}
+

@@ -90,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 itemCount: 100,
+                controller: NestedScrollController(),
               ),
             ),
           ),
