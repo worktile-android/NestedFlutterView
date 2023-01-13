@@ -67,16 +67,18 @@ FFI_PLUGIN_EXPORT uint8_t dispatch_nested_pre_scroll_2(intptr_t handler,
                                                        int32_t *offset_in_window,
                                                        int32_t type);
 
-FFI_PLUGIN_EXPORT uint8_t dispatch_nested_scroll_3(intptr_t handler,
-                                                   int32_t dx_consumed,
-                                                   int32_t dy_consumed,
-                                                   int32_t dx_unconsumed,
-                                                   int32_t dy_unconsumed,
-                                                   int32_t *offset_in_window,
-                                                   int32_t type,
-                                                   int32_t *consumed);
+FFI_PLUGIN_EXPORT void dispatch_nested_scroll_3(intptr_t handler,
+                                                int32_t dx_consumed,
+                                                int32_t dy_consumed,
+                                                int32_t dx_unconsumed,
+                                                int32_t dy_unconsumed,
+                                                int32_t *offset_in_window,
+                                                int32_t type,
+                                                int32_t *consumed);
 
-FFI_PLUGIN_EXPORT int test_result_array(intptr_t handler, int32_t *array);
+FFI_PLUGIN_EXPORT void request_parent_disallow_intercept_touch_event(intptr_t handler, uint8_t disallowIntercept);
+
+FFI_PLUGIN_EXPORT float get_y_velocity(intptr_t handler);
 
 #ifdef __cplusplus
 }

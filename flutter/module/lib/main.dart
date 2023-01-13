@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nested_flutter_view/nested_flutter_view.dart';
+import 'package:nested_flutter_view/nested_channel.dart';
+import 'package:nested_flutter_view/constants.dart';
 
 void main() {
   runApp(const MyApp());
@@ -78,36 +80,31 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: ScrollConfiguration(
-          behavior: NestedScrollBehavior(),
-          child: NestedScrollNotificationListener(
-            child: Scrollbar(
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Text("$index$index$index$index$index$index"),
-                  );
-                },
-                itemCount: 100,
-                controller: NestedScrollController(),
-              ),
+        child: NestedScrollNotificationListener(
+          child: Scrollbar(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text("$index$index$index$index$index$index"),
+                );
+              },
+              itemCount: 100,
+              controller: NestedScrollController(),
             ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          List<int> consumed = [];
+          List<int> offsetInWindow = [];
+          startNestedScroll(scrollAxisVertical, typeTouch);
+          dispatchNestedPreScroll(0, 2, consumed, offsetInWindow, typeTouch);
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-}
-
-class NestedScrollBehavior extends ScrollBehavior {
-  @override
-  ScrollPhysics getScrollPhysics(BuildContext context) {
-    return NestedScrollPhysics();
   }
 }

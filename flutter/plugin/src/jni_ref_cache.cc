@@ -36,6 +36,7 @@ void JniRefCache::CacheJniReferences(JNIEnv *env) {
 
   dispatch_nested_scroll_3_ = env->GetMethodID(nested_flutter_view_class_, "dispatchNestedScroll", "(IIII[II[I)V");
 
-  test_result_array_ = env->GetMethodID(nested_flutter_view_class_, "testResultArray", "([I)I");
+  request_parent_disallow_intercept_touch_event_ = env->GetMethodID(nested_flutter_view_class_, "requestParentDisallowInterceptTouchEvent", "(Z)V");
+  get_y_velocity_ = env->GetMethodID(nested_flutter_view_class_, "getYVelocity", "()F");
 }
 

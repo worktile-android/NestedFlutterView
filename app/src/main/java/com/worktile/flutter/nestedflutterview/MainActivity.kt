@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.worktile.flutter.NestedFlutterView
 import io.flutter.FlutterInjector
 import io.flutter.embedding.android.ExclusiveAppComponent
+import io.flutter.embedding.android.FlutterView
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val root = findViewById<FrameLayout>(R.id.layout)
+//        val root = findViewById<FrameLayout>(R.id.layout)
         supportFragmentManager.beginTransaction().replace(R.id.layout, MainFragment()).commit()
     }
 }

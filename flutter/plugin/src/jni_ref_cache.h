@@ -32,7 +32,8 @@ class JniRefCache {
 
   jmethodID dispatch_nested_scroll_3() const { return dispatch_nested_scroll_3_; }
 
-  jmethodID test_result_array() const { return test_result_array_; }
+  jmethodID request_parent_disallow_intercept_touch_event() const { return request_parent_disallow_intercept_touch_event_; }
+  jmethodID get_y_velocity() const { return get_y_velocity_; }
 
  private:
   JniRefCache();
@@ -53,7 +54,8 @@ class JniRefCache {
 
   jmethodID dispatch_nested_scroll_3_{};
 
-  jmethodID test_result_array_{};
+  jmethodID request_parent_disallow_intercept_touch_event_{};
+  jmethodID get_y_velocity_{};
 
   static shared_ptr<JniRefCache> shared_jni_ref_cache_;
 };

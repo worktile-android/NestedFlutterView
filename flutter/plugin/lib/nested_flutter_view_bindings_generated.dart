@@ -272,7 +272,7 @@ class NestedFlutterViewBindings {
           int Function(int, int, int, ffi.Pointer<ffi.Int32>,
               ffi.Pointer<ffi.Int32>, int)>();
 
-  int dispatch_nested_scroll_3(
+  void dispatch_nested_scroll_3(
     int handler,
     int dx_consumed,
     int dy_consumed,
@@ -296,7 +296,7 @@ class NestedFlutterViewBindings {
 
   late final _dispatch_nested_scroll_3Ptr = _lookup<
       ffi.NativeFunction<
-          ffi.Uint8 Function(
+          ffi.Void Function(
               ffi.IntPtr,
               ffi.Int32,
               ffi.Int32,
@@ -307,26 +307,37 @@ class NestedFlutterViewBindings {
               ffi.Pointer<ffi.Int32>)>>('dispatch_nested_scroll_3');
   late final _dispatch_nested_scroll_3 =
       _dispatch_nested_scroll_3Ptr.asFunction<
-          int Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>, int,
+          void Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>, int,
               ffi.Pointer<ffi.Int32>)>();
 
-  /// FFI_PLUGIN_EXPORT void test(int32_t *arr);
-  ///
-  /// FFI_PLUGIN_EXPORT int test_result(intptr_t handler);
-  int test_result_array(
+  void request_parent_disallow_intercept_touch_event(
     int handler,
-    ffi.Pointer<ffi.Int32> array,
+    int disallowIntercept,
   ) {
-    return _test_result_array(
+    return _request_parent_disallow_intercept_touch_event(
       handler,
-      array,
+      disallowIntercept,
     );
   }
 
-  late final _test_result_arrayPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.IntPtr, ffi.Pointer<ffi.Int32>)>>('test_result_array');
-  late final _test_result_array = _test_result_arrayPtr
-      .asFunction<int Function(int, ffi.Pointer<ffi.Int32>)>();
+  late final _request_parent_disallow_intercept_touch_eventPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Uint8)>>(
+          'request_parent_disallow_intercept_touch_event');
+  late final _request_parent_disallow_intercept_touch_event =
+      _request_parent_disallow_intercept_touch_eventPtr
+          .asFunction<void Function(int, int)>();
+
+  double get_y_velocity(
+    int handler,
+  ) {
+    return _get_y_velocity(
+      handler,
+    );
+  }
+
+  late final _get_y_velocityPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.IntPtr)>>(
+          'get_y_velocity');
+  late final _get_y_velocity =
+      _get_y_velocityPtr.asFunction<double Function(int)>();
 }
