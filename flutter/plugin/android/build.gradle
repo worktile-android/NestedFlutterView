@@ -58,7 +58,7 @@ android {
 
         externalNativeBuild {
             cmake {
-                File file = new File(project.projectDir, 'local.properties')
+                File file = new File(rootProject.projectDir, 'local.properties')
                 if (!file.exists()) {
                     file.createNewFile()
                 }
