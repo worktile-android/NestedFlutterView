@@ -80,18 +80,16 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: NestedScrollNotificationListener(
-          child: Scrollbar(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text("$index$index$index$index$index$index"),
-                );
-              },
-              itemCount: 100,
-              controller: NestedScrollController(),
-            ),
+        child: Scrollbar(
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text("$index$index$index$index$index$index"),
+              );
+            },
+            itemCount: 100,
+            controller: NestedScrollController(),
           ),
         ),
       ),

@@ -7,59 +7,10 @@ import 'package:flutter/widgets.dart';
 import 'package:nested_flutter_view/constants.dart';
 import 'package:nested_flutter_view/nested_channel.dart';
 
+@protected
 int nestedFlutterViewHandler = 0;
 
-BasicMessageChannel<Object?>? handlerChannel;
-
-void deleteNestedFlutterViewHandler() {
-  nestedFlutterViewHandler = 0;
-}
-
-class NestedScrollNotificationListener
-    extends NotificationListener<ScrollNotification> {
-  NestedScrollNotificationListener({Key? key, required Widget child})
-      : super(
-          key: key,
-          child: child,
-          onNotification: (scrollNotification) {
-            return false;
-          },
-        ) {
-    if (handlerChannel == null) {
-      handlerChannel = const BasicMessageChannel<Object?>(
-        "com.worktile.flutter.nested_flutter_view/handler",
-        StandardMessageCodec(),
-      );
-      handlerChannel?.setMessageHandler(
-        (message) => Future(() {
-          if (message is int) {
-            nestedFlutterViewHandler = message;
-            // _bindings.cache_delete_nested_flutter_view_handle_function(
-            //   nestedFlutterViewHandler,
-            //   Pointer.fromFunction(deleteNestedFlutterViewHandler),
-            // );
-          }
-          return null;
-        }),
-      );
-    }
-  }
-}
-
-class NestedScrollController extends ScrollController {
-  @override
-  ScrollPosition createScrollPosition(ScrollPhysics physics,
-      ScrollContext context, ScrollPosition? oldPosition) {
-    return NestedScrollPosition(
-      physics: physics,
-      context: context,
-      initialPixels: initialScrollOffset,
-      keepScrollOffset: keepScrollOffset,
-      oldPosition: oldPosition,
-      debugLabel: debugLabel,
-    );
-  }
-}
+BasicMessageChannel<Object?>? _handlerChannel;
 
 extension _RoundDevicePixel on double {
   int roundDevicePixel() {
@@ -72,6 +23,42 @@ extension _RoundDevicePixel on double {
     } else {
       return devicePixelAbs;
     }
+  }
+}
+
+class NestedScrollController extends ScrollController {
+  NestedScrollController({
+    super.initialScrollOffset,
+    super.keepScrollOffset,
+    super.debugLabel,
+  }) {
+    if (_handlerChannel == null) {
+      _handlerChannel = const BasicMessageChannel<Object?>(
+        "com.worktile.flutter.nested_flutter_view/handler",
+        StandardMessageCodec(),
+      );
+      _handlerChannel?.setMessageHandler(
+        (message) => Future(() {
+          if (message is int) {
+            nestedFlutterViewHandler = message;
+          }
+          return null;
+        }),
+      );
+    }
+  }
+
+  @override
+  ScrollPosition createScrollPosition(ScrollPhysics physics,
+      ScrollContext context, ScrollPosition? oldPosition) {
+    return NestedScrollPosition(
+      physics: physics,
+      context: context,
+      initialPixels: initialScrollOffset,
+      keepScrollOffset: keepScrollOffset,
+      oldPosition: oldPosition,
+      debugLabel: debugLabel,
+    );
   }
 }
 
@@ -155,17 +142,24 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
     }
 
     // overscroll的符号：当手指上滑到底时，为正数
-    double overscroll = 0;
-    if (deltaDevicePixel != 0) {
-      overscroll = physics.applyBoundaryConditions(
-          this, pixels + deltaDevicePixel / _dpr);
-    }
+    double overscroll = () {
+      if (deltaDevicePixel != 0) {
+        return physics.applyBoundaryConditions(
+          this,
+          pixels + deltaDevicePixel / _dpr,
+        );
+      } else {
+        return 0.0;
+      }
+    }();
     int unconsumedDevicePixel = overscroll.roundDevicePixel();
     int consumedDevicePixel = deltaDevicePixel - unconsumedDevicePixel;
 
     correctPixels(pixels + consumedDevicePixel / _dpr);
-    notifyListeners();
-    didUpdateScrollPositionBy(consumedDevicePixel / _dpr);
+    if (consumedDevicePixel != 0) {
+      notifyListeners();
+      didUpdateScrollPositionBy(consumedDevicePixel / _dpr);
+    }
 
     int dxConsumed = 0, dyConsumed = 0, dxUnconsumed = 0, dyUnconsumed = 0;
     switch (axis) {
@@ -191,7 +185,7 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
     offsetInWindowByDrag[0] = dragOffset[0];
     offsetInWindowByDrag[1] = dragOffset[1];
 
-    unconsumedDevicePixel -= consumed[1];
+    unconsumedDevicePixel -= consumed[directionIndex];
     overscroll = unconsumedDevicePixel / _dpr;
     if (overscroll != 0) {
       didOverscrollBy(overscroll);
@@ -223,7 +217,6 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
         tolerance: physics.tolerance,
       );
     }();
-    debugPrint(simulation.runtimeType.toString());
     if (simulation != null) {
       if (!dispatchNestedPreFling(velocity * _dpr)) {
         dispatchNestedFling(velocity * _dpr);
@@ -242,6 +235,12 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
     } else {
       goIdle();
     }
+  }
+
+  @override
+  void goIdle() {
+    stopNestedScroll(typeNonTouch);
+    super.goIdle();
   }
 }
 
