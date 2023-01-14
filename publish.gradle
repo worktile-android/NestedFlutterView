@@ -1,0 +1,72 @@
+def configPublish(Project project, group, _artifact, ver) {
+    project.afterEvaluate {
+        project.task([type: Jar], "sourceJar") {
+            if (project.extensions.findByName("android")) {
+                from project.extensions["android"].sourceSets.main.java.srcDirs
+            } else {
+                from project.sourceSets.main.java.srcDirs
+            }
+        }
+
+        project.publishing {
+            publications {
+                // Creates a Maven publication called "release".
+                release(MavenPublication) {
+                    // Applies the component for the release build variant.
+                    if (project.components.findByName("release")) {
+                        from project.components.release
+                    } else {
+                        from project.components.java
+                    }
+
+                    artifact project.sourceJar {
+                        classifier "sources"
+                    }
+
+                    // You can then customize attributes of the publication as shown below.
+                    groupId = group
+                    artifactId = _artifact
+                    version = ver
+                }
+
+                debug(MavenPublication) {
+                    // Applies the component for the release build variant.
+                    if (project.components.findByName("debug")) {
+                        from project.components.debug
+                    } else {
+                        from project.components.java
+                    }
+
+                    artifact project.sourceJar {
+                        classifier "sources"
+                    }
+
+                    // You can then customize attributes of the publication as shown below.
+                    groupId = group
+                    artifactId = _artifact
+                    version = ver
+                }
+            }
+
+            repositories {
+                maven {
+                    name "worktile"
+                    url "https://maven.worktile-android.com/repository/worktile/"
+                    credentials {
+                        it.username = MAVEN_USERNAME
+                        it.password = MAVEN_PASSWORD
+                    }
+                }
+
+                maven {
+                    name "debug"
+                    url "https://maven.worktile-android.com/repository/debug/"
+                    credentials {
+                        it.username = MAVEN_USERNAME
+                        it.password = MAVEN_PASSWORD
+                    }
+                }
+            }
+        }
+    }
+}
