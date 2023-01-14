@@ -1,7 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
+
+//apply from: "../publish.gradle"
 
 android {
     compileSdkVersion 31
@@ -39,4 +42,79 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation project(path: ":flutter")
+}
+
+def group = "com.worktile.flutter"
+def _artifact = "nestedscrollview"
+def ver = "1.0.0-SNAPSHOT"
+
+project.afterEvaluate {
+    project.task([type: Jar], "sourceJar") {
+        if (project.extensions.findByName("android")) {
+            from project.extensions["android"].sourceSets.main.java.srcDirs
+        } else {
+            from project.sourceSets.main.java.srcDirs
+        }
+    }
+
+    project.publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                if (project.components.findByName("release")) {
+                    from project.components.release
+                } else {
+                    from project.components.java
+                }
+
+                artifact project.sourceJar {
+                    classifier "sources"
+                }
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = group
+                artifactId = _artifact
+                version = ver
+            }
+
+            debug(MavenPublication) {
+                // Applies the component for the release build variant.
+                if (project.components.findByName("debug")) {
+                    from project.components.debug
+                } else {
+                    from project.components.java
+                }
+
+                artifact project.sourceJar {
+                    classifier "sources"
+                }
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = group
+                artifactId = _artifact
+                version = ver
+            }
+        }
+
+        repositories {
+            maven {
+                name "worktile"
+                url "https://maven.worktile-android.com/repository/worktile/"
+                credentials {
+                    it.username = MAVEN_USERNAME
+                    it.password = MAVEN_PASSWORD
+                }
+            }
+
+            maven {
+                name "debug"
+                url "https://maven.worktile-android.com/repository/debug/"
+                credentials {
+                    it.username = MAVEN_USERNAME
+                    it.password = MAVEN_PASSWORD
+                }
+            }
+        }
+    }
 }
