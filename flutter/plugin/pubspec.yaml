@@ -1,6 +1,6 @@
 name: nested_flutter_view
-description: A new Flutter FFI plugin project.
-version: 0.0.1
+description: A Android plugin for supporting nested scrolling when added to app
+version: 1.0.0
 homepage:
 
 environment:
