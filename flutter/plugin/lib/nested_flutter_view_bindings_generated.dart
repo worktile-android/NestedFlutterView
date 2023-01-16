@@ -26,57 +26,147 @@ class NestedFlutterViewBindings {
           lookup)
       : _lookup = lookup;
 
-  void cache_delete_nested_flutter_view_handle_function(
-    int shell_id,
-    ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>> function,
+  int initDartApiDL(
+    ffi.Pointer<ffi.Void> data,
   ) {
-    return _cache_delete_nested_flutter_view_handle_function(
-      shell_id,
+    return _initDartApiDL(
+      data,
+    );
+  }
+
+  late final _initDartApiDLPtr =
+      _lookup<ffi.NativeFunction<ffi.IntPtr Function(ffi.Pointer<ffi.Void>)>>(
+          'initDartApiDL');
+  late final _initDartApiDL =
+      _initDartApiDLPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+
+  void registerSendPort(
+    int port,
+  ) {
+    return _registerSendPort(
+      port,
+    );
+  }
+
+  late final _registerSendPortPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+          'registerSendPort');
+  late final _registerSendPort =
+      _registerSendPortPtr.asFunction<void Function(int)>();
+
+  void delegateInvoke(
+    int invoke_ptr,
+  ) {
+    return _delegateInvoke(
+      invoke_ptr,
+    );
+  }
+
+  late final _delegateInvokePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr)>>(
+          'delegateInvoke');
+  late final _delegateInvoke =
+      _delegateInvokePtr.asFunction<void Function(int)>();
+
+  void cacheMaxScrollExtent(
+    ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>> function,
+  ) {
+    return _cacheMaxScrollExtent(
       function,
     );
   }
 
-  late final _cache_delete_nested_flutter_view_handle_functionPtr = _lookup<
+  late final _cacheMaxScrollExtentPtr = _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(ffi.IntPtr,
-                  ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)>>(
-      'cache_delete_nested_flutter_view_handle_function');
-  late final _cache_delete_nested_flutter_view_handle_function =
-      _cache_delete_nested_flutter_view_handle_functionPtr.asFunction<
-          void Function(
-              int, ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)>();
+              ffi.Void Function(
+                  ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>)>>(
+      'cacheMaxScrollExtent');
+  late final _cacheMaxScrollExtent = _cacheMaxScrollExtentPtr.asFunction<
+      void Function(
+          ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>)>();
 
-  int start_nested_scroll_1(
+  void cacheMinScrollExtent(
+    ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>> function,
+  ) {
+    return _cacheMinScrollExtent(
+      function,
+    );
+  }
+
+  late final _cacheMinScrollExtentPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>)>>(
+      'cacheMinScrollExtent');
+  late final _cacheMinScrollExtent = _cacheMinScrollExtentPtr.asFunction<
+      void Function(
+          ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>)>();
+
+  void cacheViewportDimensions(
+    ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>> function,
+  ) {
+    return _cacheViewportDimensions(
+      function,
+    );
+  }
+
+  late final _cacheViewportDimensionsPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>)>>(
+      'cacheViewportDimensions');
+  late final _cacheViewportDimensions = _cacheViewportDimensionsPtr.asFunction<
+      void Function(
+          ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>)>();
+
+  void cachePixels(
+    ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>> function,
+  ) {
+    return _cachePixels(
+      function,
+    );
+  }
+
+  late final _cachePixelsPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>)>>(
+      'cachePixels');
+  late final _cachePixels = _cachePixelsPtr.asFunction<
+      void Function(
+          ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>)>();
+
+  int startNestedScroll_1(
     int handler,
     int axes,
   ) {
-    return _start_nested_scroll_1(
+    return _startNestedScroll_1(
       handler,
       axes,
     );
   }
 
-  late final _start_nested_scroll_1Ptr =
+  late final _startNestedScroll_1Ptr =
       _lookup<ffi.NativeFunction<ffi.Uint8 Function(ffi.IntPtr, ffi.Int32)>>(
-          'start_nested_scroll_1');
-  late final _start_nested_scroll_1 =
-      _start_nested_scroll_1Ptr.asFunction<int Function(int, int)>();
+          'startNestedScroll_1');
+  late final _startNestedScroll_1 =
+      _startNestedScroll_1Ptr.asFunction<int Function(int, int)>();
 
-  void stop_nested_scroll_1(
+  void stopNestedScroll_1(
     int handler,
   ) {
-    return _stop_nested_scroll_1(
+    return _stopNestedScroll_1(
       handler,
     );
   }
 
-  late final _stop_nested_scroll_1Ptr =
+  late final _stopNestedScroll_1Ptr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr)>>(
-          'stop_nested_scroll_1');
-  late final _stop_nested_scroll_1 =
-      _stop_nested_scroll_1Ptr.asFunction<void Function(int)>();
+          'stopNestedScroll_1');
+  late final _stopNestedScroll_1 =
+      _stopNestedScroll_1Ptr.asFunction<void Function(int)>();
 
-  int dispatch_nested_scroll_1(
+  int dispatchNestedScroll_1(
     int handler,
     int dx_consumed,
     int dy_consumed,
@@ -84,7 +174,7 @@ class NestedFlutterViewBindings {
     int dy_unconsumed,
     ffi.Pointer<ffi.Int32> offset_in_window,
   ) {
-    return _dispatch_nested_scroll_1(
+    return _dispatchNestedScroll_1(
       handler,
       dx_consumed,
       dy_consumed,
@@ -94,22 +184,21 @@ class NestedFlutterViewBindings {
     );
   }
 
-  late final _dispatch_nested_scroll_1Ptr = _lookup<
+  late final _dispatchNestedScroll_1Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Uint8 Function(ffi.IntPtr, ffi.Int32, ffi.Int32, ffi.Int32,
-              ffi.Int32, ffi.Pointer<ffi.Int32>)>>('dispatch_nested_scroll_1');
-  late final _dispatch_nested_scroll_1 =
-      _dispatch_nested_scroll_1Ptr.asFunction<
-          int Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>)>();
+              ffi.Int32, ffi.Pointer<ffi.Int32>)>>('dispatchNestedScroll_1');
+  late final _dispatchNestedScroll_1 = _dispatchNestedScroll_1Ptr.asFunction<
+      int Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>)>();
 
-  int dispatch_nested_pre_scroll_1(
+  int dispatchNestedPreScroll_1(
     int handler,
     int dx,
     int dy,
     ffi.Pointer<ffi.Int32> consumed,
     ffi.Pointer<ffi.Int32> offset_in_window,
   ) {
-    return _dispatch_nested_pre_scroll_1(
+    return _dispatchNestedPreScroll_1(
       handler,
       dx,
       dy,
@@ -118,26 +207,26 @@ class NestedFlutterViewBindings {
     );
   }
 
-  late final _dispatch_nested_pre_scroll_1Ptr = _lookup<
+  late final _dispatchNestedPreScroll_1Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Uint8 Function(
               ffi.IntPtr,
               ffi.Int32,
               ffi.Int32,
               ffi.Pointer<ffi.Int32>,
-              ffi.Pointer<ffi.Int32>)>>('dispatch_nested_pre_scroll_1');
-  late final _dispatch_nested_pre_scroll_1 =
-      _dispatch_nested_pre_scroll_1Ptr.asFunction<
+              ffi.Pointer<ffi.Int32>)>>('dispatchNestedPreScroll_1');
+  late final _dispatchNestedPreScroll_1 =
+      _dispatchNestedPreScroll_1Ptr.asFunction<
           int Function(
               int, int, int, ffi.Pointer<ffi.Int32>, ffi.Pointer<ffi.Int32>)>();
 
-  int dispatch_nested_fling_1(
+  int dispatchNestedFling_1(
     int handler,
     double velocity_x,
     double velocity_y,
     int consumed,
   ) {
-    return _dispatch_nested_fling_1(
+    return _dispatchNestedFling_1(
       handler,
       velocity_x,
       velocity_y,
@@ -145,68 +234,68 @@ class NestedFlutterViewBindings {
     );
   }
 
-  late final _dispatch_nested_fling_1Ptr = _lookup<
+  late final _dispatchNestedFling_1Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Uint8 Function(ffi.IntPtr, ffi.Float, ffi.Float,
-              ffi.Uint8)>>('dispatch_nested_fling_1');
-  late final _dispatch_nested_fling_1 = _dispatch_nested_fling_1Ptr
+              ffi.Uint8)>>('dispatchNestedFling_1');
+  late final _dispatchNestedFling_1 = _dispatchNestedFling_1Ptr
       .asFunction<int Function(int, double, double, int)>();
 
-  int dispatch_nested_pre_fling_1(
+  int dispatchNestedPreFling_1(
     int handler,
     double velocity_x,
     double velocity_y,
   ) {
-    return _dispatch_nested_pre_fling_1(
+    return _dispatchNestedPreFling_1(
       handler,
       velocity_x,
       velocity_y,
     );
   }
 
-  late final _dispatch_nested_pre_fling_1Ptr = _lookup<
+  late final _dispatchNestedPreFling_1Ptr = _lookup<
       ffi.NativeFunction<
-          ffi.Uint8 Function(ffi.IntPtr, ffi.Float,
-              ffi.Float)>>('dispatch_nested_pre_fling_1');
-  late final _dispatch_nested_pre_fling_1 = _dispatch_nested_pre_fling_1Ptr
+          ffi.Uint8 Function(
+              ffi.IntPtr, ffi.Float, ffi.Float)>>('dispatchNestedPreFling_1');
+  late final _dispatchNestedPreFling_1 = _dispatchNestedPreFling_1Ptr
       .asFunction<int Function(int, double, double)>();
 
-  int start_nested_scroll_2(
+  int startNestedScroll_2(
     int handler,
     int axes,
     int type,
   ) {
-    return _start_nested_scroll_2(
+    return _startNestedScroll_2(
       handler,
       axes,
       type,
     );
   }
 
-  late final _start_nested_scroll_2Ptr = _lookup<
+  late final _startNestedScroll_2Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Uint8 Function(
-              ffi.IntPtr, ffi.Int32, ffi.Int32)>>('start_nested_scroll_2');
-  late final _start_nested_scroll_2 =
-      _start_nested_scroll_2Ptr.asFunction<int Function(int, int, int)>();
+              ffi.IntPtr, ffi.Int32, ffi.Int32)>>('startNestedScroll_2');
+  late final _startNestedScroll_2 =
+      _startNestedScroll_2Ptr.asFunction<int Function(int, int, int)>();
 
-  void stop_nested_scroll_2(
+  void stopNestedScroll_2(
     int handler,
     int type,
   ) {
-    return _stop_nested_scroll_2(
+    return _stopNestedScroll_2(
       handler,
       type,
     );
   }
 
-  late final _stop_nested_scroll_2Ptr =
+  late final _stopNestedScroll_2Ptr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int32)>>(
-          'stop_nested_scroll_2');
-  late final _stop_nested_scroll_2 =
-      _stop_nested_scroll_2Ptr.asFunction<void Function(int, int)>();
+          'stopNestedScroll_2');
+  late final _stopNestedScroll_2 =
+      _stopNestedScroll_2Ptr.asFunction<void Function(int, int)>();
 
-  int dispatch_nested_scroll_2(
+  int dispatchNestedScroll_2(
     int handler,
     int dx_consumed,
     int dy_consumed,
@@ -215,7 +304,7 @@ class NestedFlutterViewBindings {
     ffi.Pointer<ffi.Int32> offset_in_window,
     int type,
   ) {
-    return _dispatch_nested_scroll_2(
+    return _dispatchNestedScroll_2(
       handler,
       dx_consumed,
       dy_consumed,
@@ -226,7 +315,7 @@ class NestedFlutterViewBindings {
     );
   }
 
-  late final _dispatch_nested_scroll_2Ptr = _lookup<
+  late final _dispatchNestedScroll_2Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Uint8 Function(
               ffi.IntPtr,
@@ -235,12 +324,11 @@ class NestedFlutterViewBindings {
               ffi.Int32,
               ffi.Int32,
               ffi.Pointer<ffi.Int32>,
-              ffi.Int32)>>('dispatch_nested_scroll_2');
-  late final _dispatch_nested_scroll_2 =
-      _dispatch_nested_scroll_2Ptr.asFunction<
-          int Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>, int)>();
+              ffi.Int32)>>('dispatchNestedScroll_2');
+  late final _dispatchNestedScroll_2 = _dispatchNestedScroll_2Ptr.asFunction<
+      int Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>, int)>();
 
-  int dispatch_nested_pre_scroll_2(
+  int dispatchNestedPreScroll_2(
     int handler,
     int dx,
     int dy,
@@ -248,7 +336,7 @@ class NestedFlutterViewBindings {
     ffi.Pointer<ffi.Int32> offset_in_window,
     int type,
   ) {
-    return _dispatch_nested_pre_scroll_2(
+    return _dispatchNestedPreScroll_2(
       handler,
       dx,
       dy,
@@ -258,7 +346,7 @@ class NestedFlutterViewBindings {
     );
   }
 
-  late final _dispatch_nested_pre_scroll_2Ptr = _lookup<
+  late final _dispatchNestedPreScroll_2Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Uint8 Function(
               ffi.IntPtr,
@@ -266,13 +354,13 @@ class NestedFlutterViewBindings {
               ffi.Int32,
               ffi.Pointer<ffi.Int32>,
               ffi.Pointer<ffi.Int32>,
-              ffi.Int32)>>('dispatch_nested_pre_scroll_2');
-  late final _dispatch_nested_pre_scroll_2 =
-      _dispatch_nested_pre_scroll_2Ptr.asFunction<
+              ffi.Int32)>>('dispatchNestedPreScroll_2');
+  late final _dispatchNestedPreScroll_2 =
+      _dispatchNestedPreScroll_2Ptr.asFunction<
           int Function(int, int, int, ffi.Pointer<ffi.Int32>,
               ffi.Pointer<ffi.Int32>, int)>();
 
-  void dispatch_nested_scroll_3(
+  void dispatchNestedScroll_3(
     int handler,
     int dx_consumed,
     int dy_consumed,
@@ -282,7 +370,7 @@ class NestedFlutterViewBindings {
     int type,
     ffi.Pointer<ffi.Int32> consumed,
   ) {
-    return _dispatch_nested_scroll_3(
+    return _dispatchNestedScroll_3(
       handler,
       dx_consumed,
       dy_consumed,
@@ -294,7 +382,7 @@ class NestedFlutterViewBindings {
     );
   }
 
-  late final _dispatch_nested_scroll_3Ptr = _lookup<
+  late final _dispatchNestedScroll_3Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Void Function(
               ffi.IntPtr,
@@ -304,40 +392,167 @@ class NestedFlutterViewBindings {
               ffi.Int32,
               ffi.Pointer<ffi.Int32>,
               ffi.Int32,
-              ffi.Pointer<ffi.Int32>)>>('dispatch_nested_scroll_3');
-  late final _dispatch_nested_scroll_3 =
-      _dispatch_nested_scroll_3Ptr.asFunction<
-          void Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>, int,
-              ffi.Pointer<ffi.Int32>)>();
+              ffi.Pointer<ffi.Int32>)>>('dispatchNestedScroll_3');
+  late final _dispatchNestedScroll_3 = _dispatchNestedScroll_3Ptr.asFunction<
+      void Function(int, int, int, int, int, ffi.Pointer<ffi.Int32>, int,
+          ffi.Pointer<ffi.Int32>)>();
 
-  void request_parent_disallow_intercept_touch_event(
+  void requestParentDisallowInterceptTouchEvent(
     int handler,
     int disallowIntercept,
   ) {
-    return _request_parent_disallow_intercept_touch_event(
+    return _requestParentDisallowInterceptTouchEvent(
       handler,
       disallowIntercept,
     );
   }
 
-  late final _request_parent_disallow_intercept_touch_eventPtr =
+  late final _requestParentDisallowInterceptTouchEventPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Uint8)>>(
-          'request_parent_disallow_intercept_touch_event');
-  late final _request_parent_disallow_intercept_touch_event =
-      _request_parent_disallow_intercept_touch_eventPtr
+          'requestParentDisallowInterceptTouchEvent');
+  late final _requestParentDisallowInterceptTouchEvent =
+      _requestParentDisallowInterceptTouchEventPtr
           .asFunction<void Function(int, int)>();
 
-  double get_y_velocity(
+  double getYVelocity(
     int handler,
   ) {
-    return _get_y_velocity(
+    return _getYVelocity(
       handler,
     );
   }
 
-  late final _get_y_velocityPtr =
+  late final _getYVelocityPtr =
       _lookup<ffi.NativeFunction<ffi.Float Function(ffi.IntPtr)>>(
-          'get_y_velocity');
-  late final _get_y_velocity =
-      _get_y_velocityPtr.asFunction<double Function(int)>();
+          'getYVelocity');
+  late final _getYVelocity =
+      _getYVelocityPtr.asFunction<double Function(int)>();
+
+  void setHorizontalMaxExtent(
+    int handler,
+    int extent,
+  ) {
+    return _setHorizontalMaxExtent(
+      handler,
+      extent,
+    );
+  }
+
+  late final _setHorizontalMaxExtentPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int)>>(
+          'setHorizontalMaxExtent');
+  late final _setHorizontalMaxExtent =
+      _setHorizontalMaxExtentPtr.asFunction<void Function(int, int)>();
+
+  void setHorizontalMinExtent(
+    int handler,
+    int extent,
+  ) {
+    return _setHorizontalMinExtent(
+      handler,
+      extent,
+    );
+  }
+
+  late final _setHorizontalMinExtentPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int)>>(
+          'setHorizontalMinExtent');
+  late final _setHorizontalMinExtent =
+      _setHorizontalMinExtentPtr.asFunction<void Function(int, int)>();
+
+  void setHorizontalViewportDimension(
+    int handler,
+    int viewport_dimension,
+  ) {
+    return _setHorizontalViewportDimension(
+      handler,
+      viewport_dimension,
+    );
+  }
+
+  late final _setHorizontalViewportDimensionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int)>>(
+          'setHorizontalViewportDimension');
+  late final _setHorizontalViewportDimension =
+      _setHorizontalViewportDimensionPtr.asFunction<void Function(int, int)>();
+
+  void setHorizontalOffset(
+    int handler,
+    int offset,
+  ) {
+    return _setHorizontalOffset(
+      handler,
+      offset,
+    );
+  }
+
+  late final _setHorizontalOffsetPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int)>>(
+          'setHorizontalOffset');
+  late final _setHorizontalOffset =
+      _setHorizontalOffsetPtr.asFunction<void Function(int, int)>();
+
+  void setVerticalMaxExtent(
+    int handler,
+    int extent,
+  ) {
+    return _setVerticalMaxExtent(
+      handler,
+      extent,
+    );
+  }
+
+  late final _setVerticalMaxExtentPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int)>>(
+          'setVerticalMaxExtent');
+  late final _setVerticalMaxExtent =
+      _setVerticalMaxExtentPtr.asFunction<void Function(int, int)>();
+
+  void setVerticalMinExtent(
+    int handler,
+    int extent,
+  ) {
+    return _setVerticalMinExtent(
+      handler,
+      extent,
+    );
+  }
+
+  late final _setVerticalMinExtentPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int)>>(
+          'setVerticalMinExtent');
+  late final _setVerticalMinExtent =
+      _setVerticalMinExtentPtr.asFunction<void Function(int, int)>();
+
+  void setVerticalViewportDimension(
+    int handler,
+    int viewport_dimension,
+  ) {
+    return _setVerticalViewportDimension(
+      handler,
+      viewport_dimension,
+    );
+  }
+
+  late final _setVerticalViewportDimensionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int)>>(
+          'setVerticalViewportDimension');
+  late final _setVerticalViewportDimension =
+      _setVerticalViewportDimensionPtr.asFunction<void Function(int, int)>();
+
+  void setVerticalOffset(
+    int handler,
+    int offset,
+  ) {
+    return _setVerticalOffset(
+      handler,
+      offset,
+    );
+  }
+
+  late final _setVerticalOffsetPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.IntPtr, ffi.Int)>>(
+          'setVerticalOffset');
+  late final _setVerticalOffset =
+      _setVerticalOffsetPtr.asFunction<void Function(int, int)>();
 }

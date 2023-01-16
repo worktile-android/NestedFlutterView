@@ -3,7 +3,7 @@
 //
 
 #include <jni.h>
-#include "jni_ref_cache.h"
+#include "ref_cache.h"
 #include "main_looper.h"
 
 extern "C" {
@@ -12,7 +12,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
   if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) != JNI_OK) {
     return -1;
   }
-  JniRefCache::GetInstance()->CacheJniReferences(env);
+  RefCache::GetInstance()->CacheJniReferences(env);
   MainLooper::GetInstance()->Init();
   return JNI_VERSION_1_6;
 }

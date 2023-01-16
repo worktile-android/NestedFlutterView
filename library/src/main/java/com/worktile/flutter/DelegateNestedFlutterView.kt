@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.ViewConfiguration
 import androidx.core.view.*
-import androidx.core.view.ViewCompat.TYPE_TOUCH
 import io.flutter.embedding.android.FlutterImageView
 import io.flutter.embedding.android.FlutterSurfaceView
 import io.flutter.embedding.android.FlutterTextureView
@@ -15,6 +14,7 @@ import io.flutter.embedding.android.FlutterView
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.BasicMessageChannel
 import io.flutter.plugin.common.StandardMessageCodec
+import kotlin.math.min
 
 /**
  * 一个android app进程有一个libnested_flutter_view.so
@@ -22,11 +22,8 @@ import io.flutter.plugin.common.StandardMessageCodec
  * 一个android app进程（libnested_flutter_view.so）可能有多个Flutter Engine(Dart VM)
  * 一个NestedFlutterView一个时刻会有0或1个Flutter Engine(Dart VM)
  */
-typealias CopyNestedScrollingChildHelper = com.worktile.flutter.NestedScrollingChildHelper
-typealias NestedScrollingChildHelper = androidx.core.view.NestedScrollingChildHelper
-
-class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChild2,
-    NestedScrollingChild3 {
+open class DelegateNestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChild2,
+    NestedScrollingChild3, ScrollingView {
     constructor(context: Context) : super(context)
     constructor(context: Context, flutterSurfaceView: FlutterSurfaceView) : super(
         context,
@@ -50,6 +47,15 @@ class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChil
             System.loadLibrary("nested_flutter_view")
         }
     }
+
+    private var horizontalMaxExtent: Int = 0
+    private var horizontalMinExtent: Int = 0
+    private var horizontalViewportDimension: Int = 0
+    private var horizontalOffset: Int = 0
+    private var verticalMaxExtent: Int = 0
+    private var verticalMinExtent: Int = 0
+    private var verticalViewportDimension: Int = 0
+    private var verticalOffset: Int = 0
 
     private val nestedScrollingChildHelper by lazy { NestedScrollingChildHelper(this) }
 
@@ -240,11 +246,49 @@ class NestedFlutterView : FlutterView, NestedScrollingChild, NestedScrollingChil
         return result
     }
 
+    override fun dispatchNestedPreFling(velocityX: Float, velocityY: Float): Boolean {
+        return nestedScrollingChildHelper.dispatchNestedPreFling(velocityX, velocityY)
+    }
+
+    override fun dispatchNestedFling(
+        velocityX: Float,
+        velocityY: Float,
+        consumed: Boolean
+    ): Boolean {
+        return nestedScrollingChildHelper.dispatchNestedFling(velocityX, velocityY, consumed)
+    }
+
     fun requestParentDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
         parent.requestDisallowInterceptTouchEvent(disallowIntercept)
     }
 
+    override fun computeHorizontalScrollExtent(): Int {
+        return horizontalViewportDimension
+    }
+
+    override fun computeHorizontalScrollOffset(): Int {
+        return horizontalOffset
+    }
+
+    override fun computeHorizontalScrollRange(): Int {
+        return horizontalViewportDimension + horizontalMaxExtent - horizontalMinExtent
+    }
+
+    override fun computeVerticalScrollExtent(): Int {
+        return verticalViewportDimension
+    }
+
+    override fun computeVerticalScrollOffset(): Int {
+        return verticalOffset
+    }
+
+    /**
+     * 这是不准确的，因为flutter无法知道滚动内容的高度，例如滚动内容小于widget大小，则无法准确知道scrollRange
+     */
+    override fun computeVerticalScrollRange(): Int {
+        return verticalViewportDimension + verticalMaxExtent - verticalMinExtent
+    }
+
     private external fun flutterViewHandler(): Long
-    private external fun deleteFlutterViewHandler(handler: Long)
 
 }

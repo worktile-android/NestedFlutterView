@@ -41,12 +41,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-    implementation project(path: ":flutter")
+    compileOnly project(path: ":flutter")
 }
 
 def group = "com.worktile.flutter"
-def _artifact = "nestedscrollview"
-def ver = "1.0.0-SNAPSHOT"
+def _artifact = "nestedflutterview"
+def ver = "1.0.0.23011620-SNAPSHOT"
 
 project.afterEvaluate {
     project.task([type: Jar], "sourceJar") {

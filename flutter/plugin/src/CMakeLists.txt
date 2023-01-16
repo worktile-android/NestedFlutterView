@@ -12,8 +12,9 @@ add_library(
         SHARED
         nested_flutter_view.cc
         jni_lifecycle.cc
-        jni_ref_cache.cc
+        ref_cache.cc
         main_looper.cc
+        dart_caller.cc
         ${DART_DIR}/dart_api_dl.c
 )
 

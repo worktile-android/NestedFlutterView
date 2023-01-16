@@ -1,7 +1,10 @@
+import 'dart:ffi';
+import 'dart:isolate';
 import 'dart:ui' show window;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nested_flutter_view/constants.dart';
@@ -9,10 +12,24 @@ import 'package:nested_flutter_view/nested_channel.dart';
 
 @protected
 int nestedFlutterViewHandler = 0;
+ScrollPosition? _connectedScrollPosition;
 
 BasicMessageChannel<Object?>? _handlerChannel;
 
-extension _RoundDevicePixel on double {
+final ReceivePort _receivePort = () {
+  return ReceivePort()
+    ..listen(
+      (message) {
+        int invokePtr = message;
+        bindings.delegateInvoke(invokePtr);
+      },
+    );
+}();
+
+final double _dpr = window.devicePixelRatio;
+
+@protected
+extension RoundDevicePixel on double {
   int roundDevicePixel() {
     double dpr = window.devicePixelRatio;
     int devicePixelAbs = (this * dpr).abs().round();
@@ -26,32 +43,21 @@ extension _RoundDevicePixel on double {
   }
 }
 
+///
+/// 不要把一个[NestedScrollController]作用于多个可滚动Widget
+///
 class NestedScrollController extends ScrollController {
   NestedScrollController({
     super.initialScrollOffset,
     super.keepScrollOffset,
     super.debugLabel,
-  }) {
-    if (_handlerChannel == null) {
-      _handlerChannel = const BasicMessageChannel<Object?>(
-        "com.worktile.flutter.nested_flutter_view/handler",
-        StandardMessageCodec(),
-      );
-      _handlerChannel?.setMessageHandler(
-        (message) => Future(() {
-          if (message is int) {
-            nestedFlutterViewHandler = message;
-          }
-          return null;
-        }),
-      );
-    }
-  }
+  });
 
   @override
   ScrollPosition createScrollPosition(ScrollPhysics physics,
       ScrollContext context, ScrollPosition? oldPosition) {
-    return NestedScrollPosition(
+    _connectedScrollPosition = null;
+    var scrollPosition = NestedScrollPosition(
       physics: physics,
       context: context,
       initialPixels: initialScrollOffset,
@@ -59,6 +65,34 @@ class NestedScrollController extends ScrollController {
       oldPosition: oldPosition,
       debugLabel: debugLabel,
     );
+    _connectedScrollPosition = scrollPosition;
+
+    if (_handlerChannel == null) {
+      _handlerChannel = const BasicMessageChannel<Object?>(
+        "com.worktile.flutter.nested_flutter_view/handler",
+        StandardMessageCodec(),
+      );
+      _handlerChannel?.setMessageHandler((message) {
+        return Future(() {
+          if (message is int) {
+            nestedFlutterViewHandler = message;
+            scrollPosition.setViewportDimension();
+            scrollPosition.setMinExtent();
+            scrollPosition.setMaxExtent();
+            scrollPosition.setOffset();
+          }
+          return null;
+        });
+      });
+    }
+
+    return scrollPosition;
+  }
+
+  @override
+  void dispose() {
+    _connectedScrollPosition = null;
+    super.dispose();
   }
 }
 
@@ -71,8 +105,6 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
     super.oldPosition,
     super.debugLabel,
   });
-
-  final double _dpr = window.devicePixelRatio;
 
   List<int> offsetInWindowByDrag = [0, 0];
 
@@ -139,6 +171,8 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
       dragOffset[1] += offsetInWindow[1];
 
       deltaDevicePixel -= consumed[directionIndex];
+
+      requestParentDisallowInterceptTouchEvent(true);
     }
 
     // overscroll的符号：当手指上滑到底时，为正数
@@ -157,8 +191,12 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
 
     correctPixels(pixels + consumedDevicePixel / _dpr);
     if (consumedDevicePixel != 0) {
+      updateUserScrollDirection(
+        delta > 0.0 ? ScrollDirection.forward : ScrollDirection.reverse,
+      );
       notifyListeners();
       didUpdateScrollPositionBy(consumedDevicePixel / _dpr);
+      requestParentDisallowInterceptTouchEvent(true);
     }
 
     int dxConsumed = 0, dyConsumed = 0, dxUnconsumed = 0, dyUnconsumed = 0;
@@ -177,8 +215,15 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
     consumed[0] = 0;
     consumed[1] = 0;
 
-    dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed,
-        offsetInWindow, type, consumed);
+    dispatchNestedScroll(
+      dxConsumed,
+      dyConsumed,
+      dxUnconsumed,
+      dyUnconsumed,
+      offsetInWindow,
+      type,
+      consumed,
+    );
 
     dragOffset[0] += offsetInWindow[0];
     dragOffset[1] += offsetInWindow[1];
@@ -218,8 +263,17 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
       );
     }();
     if (simulation != null) {
+      switch (axis) {
+        case Axis.horizontal:
+          startNestedScroll(scrollAxisHorizontal, typeTouch);
+          break;
+        case Axis.vertical:
+          startNestedScroll(scrollAxisVertical, typeTouch);
+          break;
+      }
       if (!dispatchNestedPreFling(velocity * _dpr)) {
         dispatchNestedFling(velocity * _dpr);
+        stopNestedScroll(typeTouch);
         switch (axis) {
           case Axis.horizontal:
             startNestedScroll(scrollAxisHorizontal, typeNonTouch);
@@ -232,6 +286,7 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
           NestedBallisticScrollActivity(this, simulation, context.vsync),
         );
       }
+      stopNestedScroll(typeTouch);
     } else {
       goIdle();
     }
@@ -241,6 +296,55 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
   void goIdle() {
     stopNestedScroll(typeNonTouch);
     super.goIdle();
+  }
+
+  @override
+  void absorb(ScrollPosition other) {
+    super.absorb(other);
+    setOffset();
+    setMaxExtent();
+    setMinExtent();
+    setViewportDimension();
+  }
+
+  @override
+  void correctBy(double correction) {
+    super.correctBy(correction);
+    setOffset();
+  }
+
+  @override
+  void correctPixels(double value) {
+    super.correctPixels(value);
+    setOffset();
+  }
+
+  @override
+  void forcePixels(double value) {
+    super.forcePixels(value);
+    setOffset();
+  }
+
+  @override
+  double setPixels(double newPixels) {
+    double result = super.setPixels(newPixels);
+    setOffset();
+    return result;
+  }
+
+  @override
+  bool applyContentDimensions(double minScrollExtent, double maxScrollExtent) {
+    bool result = super.applyContentDimensions(minScrollExtent, maxScrollExtent);
+    setMaxExtent();
+    setMinExtent();
+    return result;
+  }
+
+  @override
+  bool applyViewportDimension(double viewportDimension) {
+    bool result = super.applyViewportDimension(viewportDimension);
+    setViewportDimension();
+    return result;
   }
 }
 
