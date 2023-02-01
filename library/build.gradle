@@ -46,7 +46,7 @@ dependencies {
 
 def group = "com.worktile.flutter"
 def _artifact = "nestedflutterview"
-def ver = "1.0.0.23011620-SNAPSHOT"
+def ver = "1.0.0.23020111-SNAPSHOT"
 
 project.afterEvaluate {
     project.task([type: Jar], "sourceJar") {

@@ -283,7 +283,8 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
             break;
         }
         beginActivity(
-          NestedBallisticScrollActivity(this, simulation, context.vsync),
+          NestedBallisticScrollActivity(this, simulation, context.vsync,
+              activity?.shouldIgnorePointer ?? true),
         );
       }
       stopNestedScroll(typeTouch);
@@ -334,7 +335,8 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
 
   @override
   bool applyContentDimensions(double minScrollExtent, double maxScrollExtent) {
-    bool result = super.applyContentDimensions(minScrollExtent, maxScrollExtent);
+    bool result =
+        super.applyContentDimensions(minScrollExtent, maxScrollExtent);
     setMaxExtent();
     setMinExtent();
     return result;
@@ -381,6 +383,7 @@ class NestedBallisticScrollActivity extends BallisticScrollActivity {
     super.delegate,
     super.simulation,
     super.vsync,
+    super.shouldIgnorePointer,
   );
 
   int nestedOffsetY = 0;

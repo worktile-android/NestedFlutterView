@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:nested_flutter_view/nested_flutter_view.dart';
 import 'package:nested_flutter_view/nested_channel.dart';
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
         // or press Run > Flutter Hot Reload in a Flutter IDE). Notice that the
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
+        // useMaterial3: true
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -51,6 +54,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  final ScrollBehavior _behavior = TestScrollBehavior();
 
   void _incrementCounter() {
     setState(() {
@@ -81,15 +86,18 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Scrollbar(
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text("$index$index$index$index$index$index"),
-              );
-            },
-            itemCount: 100,
-            controller: NestedScrollController(),
+          child: ScrollConfiguration(
+            behavior: _behavior,
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text("$index$index$index$index$index$index"),
+                );
+              },
+              itemCount: 100,
+              controller: NestedScrollController(),
+            ),
           ),
         ),
       ),
@@ -104,5 +112,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class TestScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
+    if (getPlatform(context) == TargetPlatform.android) {
+      return StretchingOverscrollIndicator(
+        axisDirection: details.direction,
+        child: child,
+        // notificationPredicate: (notification) => false,
+      );
+    }
+    return super.buildOverscrollIndicator(context, child, details);
   }
 }
