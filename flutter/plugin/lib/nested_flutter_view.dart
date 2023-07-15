@@ -53,12 +53,14 @@ class NestedScrollController extends ScrollController {
     super.debugLabel,
   });
 
+  /// 指定physics为[AlwaysScrollableScrollPhysics]，使scrollable没有滚动距离的时候也可以
+  /// 和Android嵌套滚动交互
   @override
   ScrollPosition createScrollPosition(ScrollPhysics physics,
       ScrollContext context, ScrollPosition? oldPosition) {
     _connectedScrollPosition = null;
     var scrollPosition = NestedScrollPosition(
-      physics: physics,
+      physics: AlwaysScrollableScrollPhysics(parent: physics),
       context: context,
       initialPixels: initialScrollOffset,
       keepScrollOffset: keepScrollOffset,
@@ -253,13 +255,13 @@ class NestedScrollPosition extends ScrollPositionWithSingleContext {
     }
 
     Simulation? simulation = () {
-      if (velocity.abs() < physics.tolerance.velocity) {
+      if (velocity.abs() < physics.toleranceFor(this).velocity) {
         return null;
       }
       return ClampingScrollSimulation(
         position: pixels,
         velocity: velocity,
-        tolerance: physics.tolerance,
+        tolerance: physics.toleranceFor(this),
       );
     }();
     if (simulation != null) {
